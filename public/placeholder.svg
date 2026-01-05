@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="600" viewBox="0 0 400 600">
+  <rect fill="#1A1A1A" width="400" height="600"/>
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#333" font-family="system-ui" font-size="48">
+    RFX
+  </text>
+</svg>
