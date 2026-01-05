@@ -509,5 +509,3 @@ Butuh bantuan? Buka [issue](https://github.com/muris11/rfx_nextjs/issues) atau h
 **© 2026 Rifqy Saputra. All rights reserved.**
 
 </div>
-#   r f x _ n e x t j s  
- 
