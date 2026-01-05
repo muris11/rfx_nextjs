@@ -2,10 +2,29 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { Shuffle, Play, Heart, ArrowRight } from 'lucide-react'
+import { Shuffle, Play, Heart, ArrowRight, Film } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useUserStore } from '@/lib/stores/userStore'
+
+const PLACEHOLDER_COVER = '/placeholder-cover.svg'
+
+interface DramaItem {
+  bookId?: string
+  id?: string
+  bookName?: string
+  title?: string
+  coverWap?: string
+  cover?: string
+  introduction?: string
+  synopsis?: string
+  score?: number
+  rating?: number
+  chapterCount?: number
+  episodes?: number
+  tags?: string[]
+  genre?: string[]
+}
 
 interface RandomDrama {
   id: string
@@ -18,6 +37,22 @@ interface RandomDrama {
   rating?: number
 }
 
+function extractItems(data: unknown): DramaItem[] {
+  if (!data) return []
+  if (Array.isArray(data)) return data
+  if (typeof data === 'object' && data !== null) {
+    const obj = data as Record<string, unknown>
+    if (Array.isArray(obj.list)) return obj.list as DramaItem[]
+    if (Array.isArray(obj.data)) return obj.data as DramaItem[]
+    if (Array.isArray(obj.result)) return obj.result as DramaItem[]
+    if (obj.data && typeof obj.data === 'object') {
+      const inner = obj.data as Record<string, unknown>
+      if (Array.isArray(inner.list)) return inner.list as DramaItem[]
+    }
+  }
+  return []
+}
+
 export default function RandomPage() {
   const [drama, setDrama] = useState<RandomDrama | null>(null)
   const [loading, setLoading] = useState(true)
@@ -28,23 +63,60 @@ export default function RandomPage() {
     setLoading(true)
     setError(null)
     try {
-      const response = await fetch('/api/sansekai/dramabox/randomdrama')
-      const data = await response.json()
+      // Fetch from multiple endpoints to get a pool of dramas
+      const endpoints = [
+        '/api/sansekai/dramabox/trending',
+        '/api/sansekai/dramabox/foryou',
+        '/api/sansekai/dramabox/latest',
+        '/api/sapimu/dramabox/api/foryou/1?lang=in',
+        '/api/sapimu/dramabox/api/rank/1?lang=in',
+      ]
       
-      if (data.result || data.data || data) {
-        const result = data.result || data.data || data
+      const allItems: DramaItem[] = []
+      const seenIds = new Set<string>()
+      
+      // Fetch all endpoints in parallel
+      const results = await Promise.all(
+        endpoints.map(async (endpoint) => {
+          try {
+            const res = await fetch(endpoint)
+            if (res.ok) return res.json()
+          } catch {}
+          return null
+        })
+      )
+      
+      // Extract and deduplicate items
+      results.forEach((data) => {
+        const items = extractItems(data)
+        items.forEach((item) => {
+          const id = item.bookId || item.id || ''
+          const poster = item.coverWap || item.cover || ''
+          // Only add items with valid id and poster
+          if (id && poster && !seenIds.has(id)) {
+            seenIds.add(id)
+            allItems.push(item)
+          }
+        })
+      })
+      
+      if (allItems.length > 0) {
+        // Pick a random drama
+        const randomIndex = Math.floor(Math.random() * allItems.length)
+        const result = allItems[randomIndex]
+        
         setDrama({
-          id: result.id || result.bookId || result.drama_id || '',
-          title: result.title || result.bookName || result.name || '',
-          poster: result.poster || result.coverWap || result.cover || result.cover_url || '',
-          cover: result.cover || result.coverWap || result.cover_horizontal || '',
-          synopsis: result.synopsis || result.introduction || result.description || '',
-          genre: result.genre || result.tags || result.categories || [],
-          episodes: result.total_episodes || result.chapterCount || result.episode_count,
-          rating: result.rating || result.score,
+          id: result.bookId || result.id || '',
+          title: result.bookName || result.title || 'Unknown Title',
+          poster: result.coverWap || result.cover || '',
+          cover: result.cover || result.coverWap || '',
+          synopsis: result.introduction || result.synopsis || '',
+          genre: result.tags || result.genre || [],
+          episodes: result.chapterCount || result.episodes,
+          rating: result.score || result.rating,
         })
       } else {
-        setError('Data tidak ditemukan')
+        setError('Tidak ada drama ditemukan. Coba lagi nanti.')
       }
     } catch (err) {
       console.error('Error fetching random drama:', err)
@@ -122,8 +194,8 @@ export default function RandomPage() {
             >
               <div className="relative h-64 sm:h-80">
                 <Image
-                  src={drama.cover || drama.poster}
-                  alt={drama.title}
+                  src={(drama.cover || drama.poster) || PLACEHOLDER_COVER}
+                  alt={drama.title || 'Random Drama'}
                   fill
                   className="object-cover"
                   unoptimized
@@ -131,14 +203,20 @@ export default function RandomPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
                 
                 <div className="absolute bottom-4 left-4 sm:left-8 flex gap-4 items-end">
-                  <div className="relative w-28 sm:w-36 aspect-[2/3] rounded-xl overflow-hidden shadow-2xl">
-                    <Image
-                      src={drama.poster}
-                      alt={drama.title}
-                      fill
-                      className="object-cover"
-                      unoptimized
-                    />
+                  <div className="relative w-28 sm:w-36 aspect-[2/3] rounded-xl overflow-hidden shadow-2xl bg-gray-800">
+                    {drama.poster ? (
+                      <Image
+                        src={drama.poster}
+                        alt={drama.title}
+                        fill
+                        className="object-cover"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-700 to-gray-900">
+                        <Film className="w-12 h-12 text-gray-500" />
+                      </div>
+                    )}
                   </div>
                   <div className="pb-2">
                     <h2 className="text-2xl sm:text-3xl font-bold">{drama.title}</h2>
