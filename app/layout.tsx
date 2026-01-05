@@ -97,23 +97,6 @@ export const metadata: Metadata = {
     telephone: false,
   },
   manifest: "/manifest.json",
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/logo.png", sizes: "32x32", type: "image/png" },
-      { url: "/logo.png", sizes: "16x16", type: "image/png" },
-      { url: "/logo.png", sizes: "192x192", type: "image/png" },
-      { url: "/logo.png", sizes: "512x512", type: "image/png" },
-    ],
-    apple: [{ url: "/logo.png", sizes: "180x180", type: "image/png" }],
-    shortcut: ["/favicon.ico"],
-    other: [
-      {
-        rel: "apple-touch-icon-precomposed",
-        url: "/logo.png",
-      },
-    ],
-  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -192,6 +175,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
+        <link rel="icon" href="/logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/logo.png" />
+        <link rel="shortcut icon" href="/logo.png" />
         <StructuredData />
       </head>
       <body
