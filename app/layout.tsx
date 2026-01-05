@@ -1,11 +1,11 @@
+import BottomNav from "@/components/layout/BottomNav";
+import Footer from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
+import Providers from "@/components/providers/Providers";
+import StructuredData from "@/components/seo/StructuredData";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import BottomNav from "@/components/layout/BottomNav";
-import Providers from "@/components/providers/Providers";
-import StructuredData from "@/components/seo/StructuredData";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -13,36 +13,80 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://rfx.based.my.id'),
+  metadataBase: new URL("https://rfx.based.my.id"),
   title: {
-    default: "RFX - Watch Beyond Borders | Stream Drama, Anime & Komik Online Free",
+    default:
+      "RFX - Watch Beyond Borders | Stream Drama, Anime & Komik Online Free",
     template: "%s | RFX - Premium Streaming Platform",
   },
-  description: "Watch latest Asian drama, anime episodes, read manga & komik online for free. Stream Korean drama, Japanese anime, Chinese series, Thai lakorn with English subtitles. Your ultimate entertainment destination at RFX.",
+  description:
+    "Watch latest Asian drama, anime episodes, read manga & komik online for free. Stream Korean drama, Japanese anime, Chinese series, Thai lakorn with English subtitles. Your ultimate entertainment destination at RFX.",
   keywords: [
     // General streaming
-    "streaming", "watch online", "free streaming", "online entertainment",
+    "streaming",
+    "watch online",
+    "free streaming",
+    "online entertainment",
     // Drama keywords
-    "drama", "korean drama", "kdrama", "chinese drama", "cdrama", 
-    "japanese drama", "jdrama", "thai drama", "thai lakorn", "asian drama",
-    "drama sub indo", "drama subtitle indonesia", "nonton drama online",
+    "drama",
+    "korean drama",
+    "kdrama",
+    "chinese drama",
+    "cdrama",
+    "japanese drama",
+    "jdrama",
+    "thai drama",
+    "thai lakorn",
+    "asian drama",
+    "drama sub indo",
+    "drama subtitle indonesia",
+    "nonton drama online",
     // Anime keywords
-    "anime", "anime online", "anime streaming", "watch anime", "anime sub indo",
-    "anime subtitle indonesia", "nonton anime", "anime terbaru", "anime sub english",
-    "japanese anime", "manga anime",
+    "anime",
+    "anime online",
+    "anime streaming",
+    "watch anime",
+    "anime sub indo",
+    "anime subtitle indonesia",
+    "nonton anime",
+    "anime terbaru",
+    "anime sub english",
+    "japanese anime",
+    "manga anime",
     // Komik/Manga keywords
-    "komik", "manga", "manhwa", "manhua", "webtoon", "read manga online",
-    "baca komik online", "komik online", "manga reader",
+    "komik",
+    "manga",
+    "manhwa",
+    "manhua",
+    "webtoon",
+    "read manga online",
+    "baca komik online",
+    "komik online",
+    "manga reader",
     // Shorts keywords
-    "shorts", "short videos", "drama clips", "anime clips",
+    "shorts",
+    "short videos",
+    "drama clips",
+    "anime clips",
     // Quality indicators
-    "HD streaming", "high quality", "english subtitles", "subtitle indonesia",
+    "HD streaming",
+    "high quality",
+    "english subtitles",
+    "subtitle indonesia",
     // Platform specific
-    "rfx", "rfx streaming", "watch beyond borders",
+    "rfx",
+    "rfx streaming",
+    "watch beyond borders",
     // Genre specific
-    "romance drama", "action anime", "comedy series", "thriller drama",
+    "romance drama",
+    "action anime",
+    "comedy series",
+    "thriller drama",
     // Recent/trending
-    "latest drama", "new anime", "trending series", "popular drama",
+    "latest drama",
+    "new anime",
+    "trending series",
+    "popular drama",
   ],
   authors: [{ name: "RFX Team", url: "https://rfx.based.my.id" }],
   creator: "RFX Streaming Platform",
@@ -55,14 +99,20 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   icons: {
     icon: [
-      { url: "/logo.png", sizes: "any" },
+      { url: "/favicon.ico", sizes: "any" },
       { url: "/logo.png", sizes: "32x32", type: "image/png" },
       { url: "/logo.png", sizes: "16x16", type: "image/png" },
+      { url: "/logo.png", sizes: "192x192", type: "image/png" },
+      { url: "/logo.png", sizes: "512x512", type: "image/png" },
     ],
-    apple: [
-      { url: "/logo.png", sizes: "180x180", type: "image/png" },
+    apple: [{ url: "/logo.png", sizes: "180x180", type: "image/png" }],
+    shortcut: ["/favicon.ico"],
+    other: [
+      {
+        rel: "apple-touch-icon-precomposed",
+        url: "/logo.png",
+      },
     ],
-    shortcut: ["/logo.png"],
   },
   appleWebApp: {
     capable: true,
@@ -82,7 +132,8 @@ export const metadata: Metadata = {
     url: "https://rfx.based.my.id",
     siteName: "RFX - Watch Beyond Borders",
     title: "RFX | Stream Asian Drama, Anime & Komik Online Free",
-    description: "Your ultimate destination for streaming Asian entertainment. Watch Korean drama, Japanese anime, Chinese series, read manga & komik with English & Indonesian subtitles. 100% Free HD streaming.",
+    description:
+      "Your ultimate destination for streaming Asian entertainment. Watch Korean drama, Japanese anime, Chinese series, read manga & komik with English & Indonesian subtitles. 100% Free HD streaming.",
     images: [
       {
         url: "/logo.png",
@@ -98,7 +149,8 @@ export const metadata: Metadata = {
     site: "@rfx_stream",
     creator: "@rfx_stream",
     title: "RFX | Stream Drama, Anime & Komik Free",
-    description: "Watch latest Asian drama, anime episodes, read manga online. Korean drama, Japanese anime, Chinese series with subtitles. Stream now at RFX!",
+    description:
+      "Watch latest Asian drama, anime episodes, read manga online. Korean drama, Japanese anime, Chinese series with subtitles. Stream now at RFX!",
     images: ["/logo.png"],
   },
   robots: {
@@ -108,20 +160,20 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   alternates: {
     canonical: "https://rfx.based.my.id",
     languages: {
-      'en-US': 'https://rfx.based.my.id',
-      'id-ID': 'https://rfx.based.my.id',
+      "en-US": "https://rfx.based.my.id",
+      "id-ID": "https://rfx.based.my.id",
     },
   },
-  category: 'entertainment',
-  classification: 'Streaming Platform',
+  category: "entertainment",
+  classification: "Streaming Platform",
 };
 
 export const viewport: Viewport = {
@@ -142,13 +194,20 @@ export default function RootLayout({
       <head>
         <StructuredData />
       </head>
-      <body className={`${inter.variable} font-sans bg-background text-foreground antialiased`}>
+      <body
+        className={`${inter.variable} font-sans bg-background text-foreground antialiased`}
+      >
         <Providers>
-          <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg">
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg"
+          >
             Skip to content
           </a>
           <Navbar />
-          <main id="main-content" className="min-h-screen">{children}</main>
+          <main id="main-content" className="min-h-screen">
+            {children}
+          </main>
           <Footer />
           <BottomNav />
         </Providers>
